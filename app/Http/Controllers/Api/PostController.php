@@ -67,7 +67,7 @@ class PostController extends Controller
             );
         }
         
-        $attrs = $request->validade(
+        $attrs = $request->validate(
             [
                 'body'=> 'required|string'
             ]
