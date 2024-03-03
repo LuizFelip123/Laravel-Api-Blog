@@ -63,22 +63,20 @@ class PostController extends Controller
             return response(
                 [
                     'message'=> 'Permission denied'
-                ]
+                ], 403
             );
         }
         
-        $attrs = $request->validate(
+        $request->validate(
             [
                 'body'=> 'required|string'
             ]
         );
-        $post->update([
-            'body' => $attrs['body']
-        ]);
-
+        $post->update($request->all());
+      
 
         return response([
-            'message' =>'Post created',
+            'message' =>'Post updated',
             'post'=> $post
         ], 200);
     }

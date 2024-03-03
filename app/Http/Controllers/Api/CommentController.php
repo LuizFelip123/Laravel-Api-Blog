@@ -25,7 +25,7 @@ class CommentController extends Controller
 
 
         return response([
-            'post'=> $post->comments()->with('user:id,name, image')->get()
+            'post'=> $post->comments()->with('user:id,name,image')->get()
         ], 200);
     }
 
