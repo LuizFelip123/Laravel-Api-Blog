@@ -12,7 +12,12 @@ class PostController extends Controller
     public function index(){
         return response(
             [
-                'posts' =>Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')->get()
+                'posts' =>Post::orderBy('created_at', 'desc')->with('user:id,name,image')->withCount('comments', 'likes')
+                 ->with('likes', function($like){
+                    return $like->where('user_id', auth()->user()->id)->select('id', 'user_id','post_id')
+                    ->get();
+                 })   
+                ->get()
             ], 200
             );
     }
@@ -32,9 +37,11 @@ class PostController extends Controller
                 'body'=> 'required'
             ]
         );
+
+        $image  = $this->saveImage($request->image, 'posts');
        
-      $request->all();
-    $request['user_id'] = auth()->user()->id;
+      $request['image'] = $image;
+      $request['user_id'] = auth()->user()->id;
 
         $post = Post::create(
          $request->all()
